@@ -17,6 +17,58 @@
         name: endava-project-rg
         location: germanywestcentral
 
+    # A virtual network is required for the VM setup. Otherwise we receive this error:
+    # fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error: unable to find virtual network in resource group endava-project-rg. A virtual network with at least one subnet must exist in order to create a NIC for the virtual machine."}
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create a virtual network for the Python App VM 
+      azure_rm_virtualnetwork:
+        resource_group: endava-project-rg
+        name: endava_vNet
+        address_prefixes: "10.0.0.0/16"
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Add a subnet 
+      azure_rm_subnet:
+        resource_group: endava-project-rg
+        name: webSubnet
+        address_prefix: "10.0.1.0/24"
+        virtual_network: endava_vNet
+    # It seems a network security group is necessary to define the allowed ports and protocols
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create Network Security Group
+      azure_rm_securitygroup:
+        resource_group: endava-project-rg
+        name: networkSecurityGroup
+        rules:
+          - name: 'allow_web_traffic'
+            protocol: Tcp
+            destination_port_range:
+              - 80
+              - 443
+            access: Allow
+            priority: 1001
+            direction: Inbound
+          - name: 'allow_ssh_traffic'
+            protocol: Tcp
+            destination_port_range:
+              - 22
+            access: Allow
+            priority: 1002
+            direction: Inbound
+            
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create a network interface
+      azure_rm_networkinterface:
+        name: webapp_netInterface
+        resource_group: endava-project-rg
+        virtual_network: endava_vNet
+        subnet_name: webSubnet
+        security_group: networkSecurityGroup
+        ip_configurations:
+          - name: default
+            public_ip_address_name: webPublicIP
+            primary: True
+
+
     - name: Create VM for the Python App
       azure_rm_virtualmachine:
         resource_group: endava-project-rg
@@ -26,6 +78,7 @@
         vm_size: Standard_B1s
         admin_username: todor
         admin_password: "{{ app_serv_pass }}"
+        network_interfaces: webapp_netInterface
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
         os_disk_size_gb: 5

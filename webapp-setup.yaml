@@ -7,10 +7,6 @@
   vars_prompt:
     - name: app_serv_pass
       prompt: "Enter the Web App server's administrator password"
-    - name: git_url
-      prompt: "Enter the URL of the source Git repo"
-    - name: git_destination
-      prompt: "Enter the full path to the directory where the Git repo will be cloned"
 
   tasks:
     - name: Make temp directory
@@ -20,11 +16,22 @@
       delegate_to: localhost
       changed_when: False
     
+    # Source: https://opensource.com/article/17/8/ansible-environment-management
+    - name: Installing Git on the target VM
+      apt:
+        name: "git"
+        state: present
+
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
       ansible.builtin.git:
-        repo: "{{ git_url }}"
-        dest:  "{{ git_destination }}"
+        repo: https://github.com/TodorDimitrovIvanov/PythonWebApp/
+        dest:  /var/www/html
+
+    # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Install Python requirements using pip
+      pip: 
+        requirements: /var/www/html/requirements.txt
 
     # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
     - name: Start the Python web app 

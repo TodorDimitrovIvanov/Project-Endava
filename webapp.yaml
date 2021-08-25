@@ -22,6 +22,7 @@
         resource_group: endava-project-rg
         name: webapp_serv
         # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
+        # Source: https://portal.azure.com/#create/canonical.0001-com-ubuntu-server-focal20_04-lts-ARM
         vm_size: Standard_B1s
         admin_username: todor
         admin_password: "{{ app_serv_pass }}"
@@ -29,8 +30,10 @@
         os_type: Linux
         os_disk_size_gb: 5
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples
-        image:
+        image: 
+          # Source: https://portal.azure.com/#create/canonical.0001-com-ubuntu-server-focal20_04-lts-ARM
           offer: Debian
+          publisher: Debian
           sku: '10'
           version: latest 
 

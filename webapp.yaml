@@ -6,9 +6,9 @@
   connection: local
 
   vars_prompt:
-    - name: app-serv-pass
+    - name: app_serv_pass
       prompt: "Enter the Web App server's administrator password"
-    - name: db-serv-pass
+    - name: db_serv_pass
       prompt: "Enter the DB server's administrator password"
 
   tasks: 
@@ -24,7 +24,7 @@
         # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
         vm_size: Standard_B
         admin_username: todor
-        admin_password: "{{ app-serv-pass }}"
+        admin_password: "{{ app_serv_pass }}"
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
         os_disk_size_gb: 5
@@ -47,7 +47,7 @@
         enforce_ssl: False
         version: 10.2
         admin_username: todor
-        admin_password: "{{ db-serv-pass }}"
+        admin_password: "{{ db_serv_pass }}"
 
     - name: Create MariaDB DB
       azure_rm_mariadbdatabase:

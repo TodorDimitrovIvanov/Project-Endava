@@ -1,0 +1,30 @@
+---
+# Source: https://stackoverflow.com/questions/55472314/how-to-deploy-code-from-local-git-repository-to-remote-server-using-ansible
+# Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
+- hosts: azure-app-vms
+  connection: local
+
+  vars_prompt:
+    - name: app_serv_pass
+      prompt: "Enter the Web App server's administrator password"
+    - name: git_url
+      prompt: "Enter the URL of the source Git repo"
+    - name: git_destination
+      prompt: "Enter the full path to the directory where the Git repo will be cloned"
+
+  tasks:
+    - name: Make temp directory
+      tempfile:
+        state: directory
+      register: temp_git_archive
+      delegate_to: localhost
+      changed_when: False
+    
+    - name: Clone the repo in specified directory 
+      repo: "{{ git_url }}"
+      dest:  "{{ git_destination }}"
+
+    - name: Start the Python web app 
+      script: app.py
+
+

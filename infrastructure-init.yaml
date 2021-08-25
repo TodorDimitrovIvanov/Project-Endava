@@ -1,0 +1,112 @@
+# Git repo token: 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
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
+
+- hosts: localhost
+  connection: local
+
+  vars_prompt:
+    - name: app_serv_pass
+      prompt: "Enter the Web App server's administrator password"
+    - name: db_serv_pass
+      prompt: "Enter the DB server's administrator password"
+
+  tasks: 
+    - name: Create resource group 
+      azure_rm_resourcegroup:
+        name: endava-project-rg
+        location: germanywestcentral
+
+    # A virtual network is required for the VM setup. Otherwise we receive this error:
+    # fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error: unable to find virtual network in resource group endava-project-rg. A virtual network with at least one subnet must exist in order to create a NIC for the virtual machine."}
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create a virtual network for the Python App VM 
+      azure_rm_virtualnetwork:
+        resource_group: endava-project-rg
+        name: endava_vNet
+        address_prefixes: "10.0.0.0/16"
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Add a subnet 
+      azure_rm_subnet:
+        resource_group: endava-project-rg
+        name: webSubnet
+        address_prefix: "10.0.1.0/24"
+        virtual_network: endava_vNet
+    # It seems a network security group is necessary to define the allowed ports and protocols
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create Network Security Group
+      azure_rm_securitygroup:
+        resource_group: endava-project-rg
+        name: networkSecurityGroup
+        rules:
+          - name: 'allow_web_traffic'
+            protocol: Tcp
+            destination_port_range:
+              - 80
+              - 443
+            access: Allow
+            priority: 1001
+            direction: Inbound
+          - name: 'allow_ssh_traffic'
+            protocol: Tcp
+            destination_port_range:
+              - 22
+            access: Allow
+            priority: 1002
+            direction: Inbound
+            
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Create a network interface
+      azure_rm_networkinterface:
+        name: webapp_netInterface
+        resource_group: endava-project-rg
+        virtual_network: endava_vNet
+        subnet_name: webSubnet
+        security_group: networkSecurityGroup
+        ip_configurations:
+          - name: default
+            public_ip_address_name: webPublicIP
+            primary: True
+
+
+    - name: Create VM for the Python App
+      azure_rm_virtualmachine:
+        resource_group: endava-project-rg
+        # It seems that '_' characters can't be used in Linux hostnames on Azure:
+        # Source: https://github.com/hashicorp/terraform-provider-azurerm/issues/280
+        name: webapp-serv
+        # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
+        # Source: https://portal.azure.com/#create/canonical.0001-com-ubuntu-server-focal20_04-lts-ARM
+        vm_size: Standard_B1s
+        admin_username: todor
+        admin_password: "{{ app_serv_pass }}"
+        network_interfaces: webapp_netInterface
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
+        os_type: Linux
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples
+        image: 
+          # Source: https://portal.azure.com/#create/canonical.0001-com-ubuntu-server-focal20_04-lts-ARM
+          offer: debian-10
+          publisher: Debian
+          sku: '10'
+          version: latest 
+
+    - name: Create MariaDB Server
+      azure_rm_mariadbserver: 
+        resource_group: endava-project-rg
+        name: webapp-mariadb-server
+        sku:
+          name: B_Gen5_1
+          tier: Basic  
+        location: germanywestcentral
+        storage_mb: 5120
+        enforce_ssl: False
+        version: 10.2
+        admin_username: todor
+        admin_password: "{{ db_serv_pass }}"
+
+    - name: Create MariaDB DB
+      azure_rm_mariadbdatabase:
+        resource_group: endava-project-rg
+        server_name: webapp-mariadb-server
+        name: webapp-mariadb-db

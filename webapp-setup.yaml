@@ -20,10 +20,12 @@
       delegate_to: localhost
       changed_when: False
     
+    # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
       repo: "{{ git_url }}"
       dest:  "{{ git_destination }}"
 
+    # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
     - name: Start the Python web app 
       script: app.py
 

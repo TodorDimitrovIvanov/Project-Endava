@@ -1,16 +1,53 @@
-- host: appserver
-  task: 
-    - name: 
-      file: 
-        state: directory
-        path: /var/www/html
-        owner: www-data
-        group: www-data
-        mode: 0755
-    - name: Copy files to remote server
-      copy:
-        src: dist/
-        dest: /var/www/html
-        onwer: www-data 
-        group: www-data 
-        mode: 0755
+- host: localhost
+  connection: local
+
+  vars_prompt:
+    - name: app-serv-pass
+      prompt: "Enter the Web App server's administrator password"
+    - name: db-serv-pass
+      prompt: "Enter the DB server's administrator password"
+
+  tasks: 
+    - name: Create resource group 
+      azurerm_rm_resourcegroup:
+        name: endava-project-rg
+        localtion: germanywestcentral
+      regiser: rg
+
+    - name: Create VM for the Python App
+      azurerm_rm_virtualmachine:
+        resource_group: endava-project-rg
+        name: webapp_serv
+        # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
+        vm_size: Standard_B
+        admin_username: todor
+        admin_password: "{{ app-serv-pass }}"
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
+        os_type: Linux
+        os_disk_size_gb: 5
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples
+        image:
+          offer: CentOS
+          publisher: OpenLogic
+          sku: '7.1'
+          version: latest 
+
+    - name: Create MariaDB Server
+      azure_rm_mariadbserver: 
+        resource_group: endava-project-rg
+        name: webapp_mariadb_server
+        sku:
+          name: B_Gen5_1
+          tier: Basic  
+        location: germanywestcentral
+        storage_mb: 1024
+        enforce_ssl: False
+        version: 10.2
+        admin_username: todor
+        admin_password: "{{ db-serv-pass }}"
+
+    - name: Create MariaDB DB
+      azurerm_rm_mariadbdatabase:
+        resource_group: endava-project-rg
+        server_name: webapp_mariadb_server
+        name: webapp_mariadb_db

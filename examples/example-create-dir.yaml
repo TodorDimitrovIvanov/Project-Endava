@@ -1,0 +1,16 @@
+- host: appserver
+  task: 
+    - name: 
+      file: 
+        state: directory
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        mode: 0755
+    - name: Copy files to remote server
+      copy:
+        src: dist/
+        dest: /var/www/html
+        onwer: www-data 
+        group: www-data 
+        mode: 0755

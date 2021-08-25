@@ -19,7 +19,7 @@
     # Source: https://opensource.com/article/17/8/ansible-environment-management
     - name: Installing Git on the target VM
       apt:
-        name: "git"
+        name: git
         state: present
 
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html

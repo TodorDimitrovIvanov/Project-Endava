@@ -1,0 +1,31 @@
+- host: localhost
+  connection: local
+
+  vars_prompt:
+    - name: password
+      prompt: "Enter the administrator password"
+
+  tasks: 
+    - name: Create resource group 
+      azurerm_rm_resourcegroup:
+        name: endava-project-rg
+        localtion: germanywestcentral
+      regiser: rg
+
+    - name: Create VM for the Python App
+      azurerm_rm_virtualmachine:
+        resource_group: endava-project-rg
+        name: webapp_serv
+        # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
+        vm_size: Standard_B
+        admin_username: todor
+        admin_password: "{{ password }}"
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
+        os_type: Linux
+        os_disk_size_gb: 5
+        # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples
+        image:
+          offer: CentOS
+          publisher: OpenLogic
+          sku: '7.1'
+          version: latest 

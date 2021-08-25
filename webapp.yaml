@@ -22,7 +22,7 @@
         resource_group: endava-project-rg
         name: webapp_serv
         # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
-        vm_size: Standard_B
+        vm_size: Standard_B1s
         admin_username: todor
         admin_password: "{{ app_serv_pass }}"
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module

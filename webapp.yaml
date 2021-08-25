@@ -94,7 +94,7 @@
     - name: Create MariaDB Server
       azure_rm_mariadbserver: 
         resource_group: endava-project-rg
-        name: webapp_mariadb_server
+        name: webapp-mariadb-server
         sku:
           name: B_Gen5_1
           tier: Basic  
@@ -108,5 +108,5 @@
     - name: Create MariaDB DB
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
-        server_name: webapp_mariadb_server
-        name: webapp_mariadb_db
+        server_name: webapp-mariadb-server
+        name: webapp-mariadb-db

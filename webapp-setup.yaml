@@ -3,6 +3,7 @@
 # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
 - hosts: azure-app-vms
   connection: local
+  become_method: su
 
   vars_prompt:
     - name: app_serv_pass
@@ -37,4 +38,4 @@
     - name: Start the Python web app 
       script: app.py
 
-
+      

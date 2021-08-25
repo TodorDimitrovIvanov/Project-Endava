@@ -30,9 +30,8 @@
         os_disk_size_gb: 5
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples
         image:
-          offer: CentOS
-          publisher: OpenLogic
-          sku: '7.1'
+          offer: Debian
+          sku: '10'
           version: latest 
 
     - name: Create MariaDB Server

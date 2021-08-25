@@ -1,3 +1,4 @@
+# Git repo token: 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
 - hosts: localhost
   connection: local
 
@@ -12,7 +13,7 @@
       azurerm_rm_resourcegroup:
         name: endava-project-rg
         localtion: germanywestcentral
-      regiser: rg
+      register: rg
 
     - name: Create VM for the Python App
       azurerm_rm_virtualmachine:

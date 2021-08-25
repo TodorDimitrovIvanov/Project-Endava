@@ -99,7 +99,7 @@
           name: B_Gen5_1
           tier: Basic  
         location: germanywestcentral
-        storage_mb: 1024
+        storage_mb: 5120
         enforce_ssl: False
         version: 10.2
         admin_username: todor

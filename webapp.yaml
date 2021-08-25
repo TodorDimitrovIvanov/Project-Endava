@@ -1,6 +1,6 @@
 # Git repo token: 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
-# Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
-# DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
 
 - hosts: localhost
   connection: local
@@ -15,7 +15,7 @@
     - name: Create resource group 
       azure_rm_resourcegroup:
         name: endava-project-rg
-        localtion: germanywestcentral
+        location: germanywestcentral
 
     - name: Create VM for the Python App
       azure_rm_virtualmachine:

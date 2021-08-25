@@ -27,7 +27,7 @@
     - name: Clone the repo in specified directory 
       ansible.builtin.git:
         repo: https://github.com/TodorDimitrovIvanov/PythonWebApp/
-        dest:  /var/www/html
+        dest:  /home/todor/web
 
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
     - name: Install Python requirements using pip

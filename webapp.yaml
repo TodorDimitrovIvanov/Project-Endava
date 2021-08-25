@@ -10,13 +10,13 @@
 
   tasks: 
     - name: Create resource group 
-      azurerm_rm_resourcegroup:
+      azure_rm_resourcegroup:
         name: endava-project-rg
         localtion: germanywestcentral
         register: rg
 
     - name: Create VM for the Python App
-      azurerm_rm_virtualmachine:
+      azure_rm_virtualmachine:
         resource_group: endava-project-rg
         name: webapp_serv
         # Source: https://docs.microsoft.com/en-us/azure/virtual-machines/sizes
@@ -48,7 +48,7 @@
         admin_password: "{{ db-serv-pass }}"
 
     - name: Create MariaDB DB
-      azurerm_rm_mariadbdatabase:
+      azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
         server_name: webapp_mariadb_server
         name: webapp_mariadb_db

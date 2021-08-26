@@ -28,6 +28,9 @@
     - name: Installing setuptools for Python 3
       command: sudo apt-get install -y python3-setuptools
 
+    - name: Installing Nginx 
+      command: sudo apt-get install -y nginx
+
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
       ansible.builtin.git:
@@ -43,6 +46,12 @@
     # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
     - name: Creating a service for running the Python web app 
       command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
+
+    - name: Removing the old Nginx default config file
+      command: sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default-ORIGINAL
+
+    - name: Adding the Nginx default configuration file
+      command: sudo cp -arf /home/todor/web/webservers/nginx.conf /etc/nginx/sites-available/default
 
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied

@@ -79,7 +79,7 @@
         resource_group: endava-project-rg
         address_prefix: "10.0.0.0/24"
         virtual_network: endava_vNet
-        security_group_name: networkSecurityGroup
+        #security_group_name: networkSecurityGroup
         state: present
       register: output_private_ip
 

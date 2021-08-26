@@ -72,7 +72,7 @@
    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet for App server
       azure_rm_subnet:
-        name: webSubnet2
+        name: webSubnet
         resource_group: endava-project-rg
         address_prefix: "10.0.1.0/24"
         virtual_network: endava_vNet
@@ -81,7 +81,7 @@
 
     - name: Add a subnet for MySQL server
       azure_rm_subnet:
-        name: webSubnet2-mysql
+        name: mysqlSubnet
         resource_group: endava-project-rg
         address_prefix: "10.0.2.0/24"
         virtual_network: endava_vNet
@@ -89,12 +89,12 @@
             
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible
-    - name: Create a network interface
+    - name: Create a network interface for the web app VM
       azure_rm_networkinterface:
         name: webapp_netInterface
         resource_group: endava-project-rg
         virtual_network: endava_vNet
-        subnet_name: webSubnet2
+        subnet_name: webSubnet
         security_group: networkSecurityGroup
         ip_configurations:
           - name: default
@@ -119,7 +119,7 @@
           - 443
           - 3001
         network_interfaces: webapp_netInterface
-        subnet_name: webSubnet2
+        subnet_name: webSubnet
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples

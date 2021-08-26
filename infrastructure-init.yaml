@@ -57,13 +57,6 @@
         resource_group: endava-project-rg
         name: networkSecurityGroup
         rules:
-        - name: 'ssh'
-          protocol: Tcp
-          source_address_prefix: '*'
-          destination_port_range: 22
-          access: Allow
-          priority: 100
-          direction: Inbound 
         - name: 'http' 
           protocol: Tcp 
           source_address_prefix: '*'

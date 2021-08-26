@@ -147,7 +147,7 @@
         admin_username: todor
         admin_password: "{{ db_serv_pass }}"
 
-    - name: Create MariaDB DB
+    - name: Create MariaDB DB instance
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
@@ -158,7 +158,7 @@
       azure_rm_resource:
         api_version: '2017-12-01'
         resource_group: endava-project-rg
-        provider: dbformysql
+        #provider: dbformysql
         resource_type: servers
         resource_name: webapp-mariadb-server
         subresource:

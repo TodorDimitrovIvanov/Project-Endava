@@ -25,14 +25,14 @@
         resource_group: endava-project-rg
         name: endava_vNet
         address_prefixes: "10.0.0.0/16"
-        
+
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet 
       azure_rm_subnet:
         resource_group: endava-project-rg
         name: webSubnet
         address_prefix: "10.0.1.0/24"
-        virtual_network: 
+        virtual_network: endava_vNet
 
     - name: Add a Public IP Address
       azure_rm_publicipaddress:
@@ -40,7 +40,7 @@
         allocation_method: Static
         name: endava-project-pub-ip
         # Register allows you to populate variables based on the output of Ansible tasks.
-        register: output_ip_address
+      register: output_ip_address
 
     - name: Output public IP Address
       debug:

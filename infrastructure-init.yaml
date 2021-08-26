@@ -154,22 +154,4 @@
         name: webapp-mariadb-db
 
     # Source: https://docs.microsoft.com/en-us/azure/developer/ansible/mysql-configure?tabs=ansible#configure-a-firewall-rule
-    - name: Open Firewall to allow access to the MySQL server
-      azure_rm_resource:
-        api_version: '2017-12-01'
-        resource_group: endava-project-rg
-        #provider: dbformysql
-        resource_type: servers
-        resource_name: webapp-mariadb-server
-        subresource:
-          - type: firewallrules
-            name: externalaccess
-        body:
-          properties: 
-            startIpAddress: "0.0.0.0"
-            endIpAddress: "255.255.255.255"
-      register: output_db_host
-        
-    - name: Output MySQL public IP Address
-      debug:
-        msg: "The MySQL server's public IP is {{ output_db_host.state.hostnames }}"
+

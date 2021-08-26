@@ -88,12 +88,12 @@
         resource_group: endava-project-rg
         virtual_network: endava_vNet
         subnet_name: webSubnet
-        public_ip_name: endava_project_pub_ip
         security_group: networkSecurityGroup
-        #ip_configurations:
-        #  - name: default
-        #    public_ip_address_name: endava-project-pub-ip
-        #    primary: True
+        ip_configurations:
+          - name: default
+            public_ip_address_name: endava-project-pub-ip
+            public_ip_allocation_method: Static
+            primary: True
 
 
     - name: Create VM for the Python App

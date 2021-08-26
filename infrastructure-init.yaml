@@ -28,13 +28,21 @@
         state: present
 
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
-    - name: Add a subnet 
+    - name: Add a subnet for App server
       azure_rm_subnet:
         name: webSubnet2
         resource_group: endava-project-rg
-        address_prefix: "10.0.0.0/24"
+        address_prefix: "10.0.1.0/24"
         virtual_network: endava_vNet
         security_group_name: networkSecurityGroup
+        state: present
+
+    - name: Add a subnet for MySQL server
+      azure_rm_subnet:
+        name: webSubnet2-mysql
+        resource_group: endava-project-rg
+        address_prefix: "10.0.2.0/24"
+        virtual_network: endava_vNet
         state: present
 
     - name: Add a Public IP Address
@@ -112,6 +120,7 @@
           - 443
           - 3001
         network_interfaces: webapp_netInterface
+        subnet_name: webSubnet2
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples

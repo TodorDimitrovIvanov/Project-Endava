@@ -47,6 +47,13 @@
         resource_group: endava-project-rg
         name: networkSecurityGroup
         rules:
+        - name: 'ssh' 
+          protocol: Tcp 
+          source_address_prefix: '*'
+          destination_port_range: 22 
+          access: Allow
+          priority: 100
+          direction: Inbound 
         - name: 'http' 
           protocol: Tcp 
           source_address_prefix: '*'
@@ -79,14 +86,6 @@
         security_group_name: networkSecurityGroup
         state: present
 
-    #- name: Add a subnet for MySQL server
-    #  azure_rm_subnet:
-    #    name: webSubnet2-mysql
-    #    resource_group: endava-project-rg
-    #    address_prefix: "10.0.2.0/24"
-    #    virtual_network: endava_vNet
-    #    state: absent
-            
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible
     - name: Create a network interface for the web app VM
@@ -115,6 +114,7 @@
         admin_username: todor
         admin_password: "{{ app_serv_pass }}"
         open_ports: 
+          - 22
           - 80
           - 443
           - 3001
@@ -129,6 +129,9 @@
           publisher: Debian
           sku: '10'
           version: latest 
+
+
+# MYSQL Section           
 
     - name: Create MariaDB Server
       azure_rm_mariadbserver: 
@@ -149,3 +152,24 @@
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
         name: webapp-mariadb-db
+
+    # Source: https://docs.microsoft.com/en-us/azure/developer/ansible/mysql-configure?tabs=ansible#configure-a-firewall-rule
+    - name: Open Firewall to allow access to the MySQL server
+      azure_rm_resource:
+        api_version: '2017-12-01'
+        resource_group: endava-project-rg
+        provider: dbformysql
+        resource_type: servers
+        resource_name: webapp-mariadb-server
+        subresources:
+          - type: firewallrules
+            name: externalaccess
+        body:
+          properties: 
+            startIpAddress: "0.0.0.0"
+            endIpAddress: "255.255.255.255"
+        register: output_db_host
+        
+    - name: Output MySQL public IP Address
+      debug:
+        msg: "The MySQL server's public IP is {{ output_db_host.state.hostnames }}"

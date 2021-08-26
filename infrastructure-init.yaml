@@ -57,40 +57,33 @@
         resource_group: endava-project-rg
         name: networkSecurityGroup
         rules:
-        - name: 'AllowSSH'
+        - name: 'ssh'
           protocol: Tcp
           source_address_prefix: '*'
           destination_port_range: 22
           access: Allow
           priority: 100
           direction: Inbound 
-        - name: 'AllowHTTP' 
+        - name: 'http' 
           protocol: Tcp 
           source_address_prefix: '*'
           destination_port_range: 80 
           access: Allow
           priority: 101 
           direction: Inbound 
-        - name: 'AllowHTTPS' 
+        - name: 'https' 
           protocol: Tcp 
           source_address_prefix: '*'
           destination_port_range: 443 
           access: Allow
           priority: 102 
           direction: Inbound 
-        - name: 'AllowWebApp-Temp' 
+        - name: 'py-webapp' 
           protocol: Tcp 
           source_address_prefix: '*' 
           destination_port_range: 3001
           access: Allow
           priority: 103 
-          direction: Inbound 
-        - name: 'DenyAll' 
-          protocol: Tcp 
-          source_address_prefix: '*' 
-          destination_port_range: '*' 
-          access: Deny
-          priority: 104 
           direction: Inbound 
 
             

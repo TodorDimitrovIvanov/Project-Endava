@@ -94,7 +94,7 @@
         name: webapp_netInterface
         resource_group: endava-project-rg
         virtual_network: endava_vNet
-        subnet_name: webSubnet2
+        subnet: webSubnet2
         security_group: networkSecurityGroup
         ip_configurations:
           - name: default

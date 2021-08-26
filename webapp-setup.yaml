@@ -47,5 +47,5 @@
 
     # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
     - name: Start the Python web app 
-      script: app.py
+      command: /usr/bin/python3 /home/todor/web/app.py
 

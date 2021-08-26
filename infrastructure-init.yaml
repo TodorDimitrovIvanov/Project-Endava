@@ -34,7 +34,7 @@
         resource_group: endava-project-rg
         address_prefix: "10.0.1.0/24"
         virtual_network: endava_vNet
-        #security_group_name: networkSecurityGroup
+        security_group_name: networkSecurityGroup
         state: present
 
     - name: Add a Public IP Address
@@ -89,7 +89,7 @@
         virtual_network: endava_vNet
         subnet_name: webSubnet
         public_ip_name: endava_project_pub_ip
-        #security_group: networkSecurityGroup
+        security_group: networkSecurityGroup
         #ip_configurations:
         #  - name: default
         #    public_ip_address_name: endava-project-pub-ip

@@ -41,7 +41,7 @@
       azure_rm_publicipaddress:
         resource_group: endava-project-rg
         allocation_method: Static
-        name: endava-project-pub-ip
+        name: endava_project_pub_ip
         domain_name: endava-project.todorivanov.net
         # Register allows you to populate variables based on the output of Ansible tasks.
       register: output_ip_address
@@ -98,7 +98,7 @@
         resource_group: endava-project-rg
         virtual_network: endava_vNet
         subnet_name: webSubnet
-        public_ip_name: endava-project-pub-ip
+        public_ip_name: endava_project_pub_ip
         security_group: networkSecurityGroup
         #ip_configurations:
         #  - name: default

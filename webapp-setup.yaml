@@ -27,6 +27,9 @@
     - name: Installing pip3 on the target VM
       command: sudo apt-get install -y python3-pip
 
+    - name: Installing setuptools for Python 3
+      command: sudo apt-get install -y python3-setuptools
+
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
       ansible.builtin.git:

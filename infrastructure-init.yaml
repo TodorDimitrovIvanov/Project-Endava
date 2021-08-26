@@ -25,13 +25,27 @@
         resource_group: endava-project-rg
         name: endava_vNet
         address_prefixes: "10.0.0.0/16"
+        
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet 
       azure_rm_subnet:
         resource_group: endava-project-rg
         name: webSubnet
         address_prefix: "10.0.1.0/24"
-        virtual_network: endava_vNet
+        virtual_network: 
+
+    - name: Add a Public IP Address
+      azure_rm_publicipaddress:
+        resource_group: endava-project-rg
+        allocation_method: Static
+        name: endava-project-pub-ip
+        # Register allows you to populate variables based on the output of Ansible tasks.
+        register: output_ip_address
+
+    - name: Output public IP Address
+      debug:
+        msg: "The public IP is {{ output_ip_address.state.ip_address }}"
+
     # It seems a network security group is necessary to define the allowed ports and protocols
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Create Network Security Group
@@ -65,7 +79,7 @@
         security_group: networkSecurityGroup
         ip_configurations:
           - name: default
-            public_ip_address_name: webPublicIP
+            public_ip_address_name: endava-project-pub-ip
             primary: True
 
 

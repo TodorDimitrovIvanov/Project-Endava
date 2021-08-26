@@ -85,7 +85,7 @@
         resource_group: endava-project-rg
         address_prefix: "10.0.2.0/24"
         virtual_network: endava_vNet
-        state: present
+        state: absent
             
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible

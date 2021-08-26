@@ -24,7 +24,7 @@
       azure_rm_virtualnetwork:
         resource_group: endava-project-rg
         name: endava_vNet
-        address_prefixes: "10.0.1.0/16"
+        address_prefixes: "10.0.0.0/16"
         state: present
 
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
@@ -32,7 +32,7 @@
       azure_rm_subnet:
         name: webSubnet
         resource_group: endava-project-rg
-        address_prefix: "10.0.1.0/24"
+        address_prefix: "10.0.0.0/24"
         virtual_network: endava_vNet
         security_group_name: networkSecurityGroup
         state: present

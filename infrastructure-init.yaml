@@ -23,17 +23,17 @@
     - name: Create a virtual network for the Python App VM 
       azure_rm_virtualnetwork:
         resource_group: endava-project-rg
-        name: endava_vNet2
+        name: endava_vNet
         address_prefixes: "10.0.0.0/16"
         state: present
 
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet 
       azure_rm_subnet:
-        name: webSubnet
+        name: webSubnet2
         resource_group: endava-project-rg
         address_prefix: "10.0.0.0/24"
-        virtual_network: endava_vNet2
+        virtual_network: endava_vNet
         security_group_name: networkSecurityGroup
         state: present
 
@@ -86,8 +86,8 @@
       azure_rm_networkinterface:
         name: webapp_netInterface
         resource_group: endava-project-rg
-        virtual_network: endava_vNet2
-        subnet_name: webSubnet
+        virtual_network: endava_vNet
+        subnet_name: webSubnet2
         security_group: networkSecurityGroup
         ip_configurations:
           - name: default

@@ -53,16 +53,10 @@
 
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
-    #- name: Enabling the service
-    #  service: name=py-webapp enabled=yes 
     # So we'll just do this manually 
     - name: Enabling the service
       command: sudo systemctl enable py-webapp
 
     - name: Starting the service
       command: sudo systemctl start py-webapp
-
-    # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
-    #- name: Start the Python web app 
-    #  command: /usr/bin/python3 /home/todor/web/app.py
 

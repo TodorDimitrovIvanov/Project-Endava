@@ -42,7 +42,6 @@
         resource_group: endava-project-rg
         allocation_method: Static
         name: endava_project_pub_ip
-        domain_name: endava-project.todorivanov.net
         # Register allows you to populate variables based on the output of Ansible tasks.
       register: output_ip_address
 

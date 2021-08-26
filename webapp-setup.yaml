@@ -4,11 +4,12 @@
 # Source: https://blog.knoldus.com/how-to-install-python-in-target-host-using-ansible/
 - hosts: azure-app-vms
   connection: local
-  become_method: su
 
   # Source: https://sleeplessbeastie.eu/2020/02/07/how-to-instruct-ansible-to-use-specific-version-of-python/
   vars:
     ansible_python_interpreter: /usr/bin/python3
+    remote_user: todor
+    become_method: sudo
 
   vars_prompt:
     - name: app_serv_pass

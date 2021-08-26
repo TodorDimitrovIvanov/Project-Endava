@@ -1,16 +1,19 @@
 ---
 # Source: https://stackoverflow.com/questions/55472314/how-to-deploy-code-from-local-git-repository-to-remote-server-using-ansible
 # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
+# Source: https://blog.knoldus.com/how-to-install-python-in-target-host-using-ansible/
 - hosts: azure-app-vms
   connection: local
+
+  # Source: https://sleeplessbeastie.eu/2020/02/07/how-to-instruct-ansible-to-use-specific-version-of-python/
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    remote_user: todor
+    become_method: sudo
 
   vars_prompt:
     - name: app_serv_pass
       prompt: "Enter the Web App server's administrator password"
-    - name: git_url
-      prompt: "Enter the URL of the source Git repo"
-    - name: git_destination
-      prompt: "Enter the full path to the directory where the Git repo will be cloned"
 
   tasks:
     - name: Make temp directory
@@ -20,11 +23,40 @@
       delegate_to: localhost
       changed_when: False
     
+    # Source: https://opensource.com/article/17/8/ansible-environment-management
+    # The source above doesn't work because the SSH account is not root but has sudo permissions 
+    # Therefore to solve this issue we need to run a command instead 
+    - name: Installing git  on the target VM
+      command: sudo apt-get install -y git
+
+    - name: Installing pip3 on the target VM
+      command: sudo apt-get install -y python3-pip
+
+    - name: Installing setuptools for Python 3
+      command: sudo apt-get install -y python3-setuptools
+
+    # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
-      repo: "{{ git_url }}"
-      dest:  "{{ git_destination }}"
+      ansible.builtin.git:
+        repo: https://github.com/TodorDimitrovIvanov/PythonWebApp/
+        dest:  /home/todor/web
 
-    - name: Start the Python web app 
-      script: app.py
+    # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Install Python requirements using pip
+      pip: 
+        executable: /usr/bin/pip3
+        requirements: /home/todor/web/requirements.txt
 
+    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
+    - name: Creating a service for running the Python web app 
+      command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
+
+    # Can't enable the service due to the following error message: 
+    # "Unable to enable service py-webapp: Failed to enable unit: Access denied
+    # So we'll just do this manually 
+    - name: Enabling the service
+      command: sudo systemctl enable py-webapp
+
+    - name: Starting the service
+      command: sudo systemctl start py-webapp
 

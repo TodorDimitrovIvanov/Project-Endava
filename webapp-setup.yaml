@@ -1,6 +1,7 @@
 ---
 # Source: https://stackoverflow.com/questions/55472314/how-to-deploy-code-from-local-git-repository-to-remote-server-using-ansible
 # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
+# Source: https://blog.knoldus.com/how-to-install-python-in-target-host-using-ansible/
 - hosts: azure-app-vms
   connection: local
   become_method: su
@@ -35,6 +36,7 @@
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
     - name: Install Python requirements using pip
       pip: 
+        executable: /usr/bin/pip3
         requirements: /var/www/html/requirements.txt
 
     # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible

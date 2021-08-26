@@ -3,9 +3,11 @@
 # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
 # Source: https://blog.knoldus.com/how-to-install-python-in-target-host-using-ansible/
 - hosts: azure-app-vms
-  ansible_python_interpreter: /usr/bin/python3
   connection: local
   become_method: su
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   vars_prompt:
     - name: app_serv_pass

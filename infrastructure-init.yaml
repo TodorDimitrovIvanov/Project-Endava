@@ -49,28 +49,24 @@
         rules:
         - name: 'ssh' 
           protocol: Tcp 
-          source_address_prefix: '*'
           destination_port_range: 22 
           access: Allow
           priority: 100
           direction: Inbound 
         - name: 'http' 
           protocol: Tcp 
-          source_address_prefix: '*'
           destination_port_range: 80 
           access: Allow
           priority: 101 
           direction: Inbound 
         - name: 'https' 
           protocol: Tcp 
-          source_address_prefix: '*'
           destination_port_range: 443 
           access: Allow
           priority: 102 
           direction: Inbound 
         - name: 'py-webapp' 
           protocol: Tcp 
-          source_address_prefix: '*' 
           destination_port_range: 3001
           access: Allow
           priority: 103 
@@ -119,7 +115,6 @@
           - 443
           - 3001
         network_interfaces: webapp_netInterface
-        #subnet_name: webSubnet2
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#examples

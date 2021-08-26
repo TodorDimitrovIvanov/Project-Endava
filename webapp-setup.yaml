@@ -43,7 +43,7 @@
     - name: Install Python requirements using pip
       pip: 
         executable: /usr/bin/pip3
-        requirements: /var/www/html/requirements.txt
+        requirements: /home/todor/web/requirements.txt
 
     # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
     - name: Start the Python web app 

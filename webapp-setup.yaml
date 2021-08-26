@@ -49,7 +49,7 @@
 
     # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
     - name: Creating up a service for running the Python web app 
-      copy: src=services/webapp dest=/lib/systemd/system/py-webapp.service
+      command: cp -arf services/webapp /lib/systemd/system/py-webapp.service
 
     - name: Enabling the service
       service: name=py-webapp enabled=yes 

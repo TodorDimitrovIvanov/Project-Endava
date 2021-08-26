@@ -58,6 +58,7 @@
             destination_port_range:
               - 80
               - 443
+              - 3001
             access: Allow
             priority: 1001
             direction: Inbound
@@ -70,17 +71,19 @@
             direction: Inbound
             
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    # Source!!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible
     - name: Create a network interface
       azure_rm_networkinterface:
         name: webapp_netInterface
         resource_group: endava-project-rg
         virtual_network: endava_vNet
         subnet_name: webSubnet
+        public_ip_name: endava-project-pub-ip
         security_group: networkSecurityGroup
-        ip_configurations:
-          - name: default
-            public_ip_address_name: endava-project-pub-ip
-            primary: True
+        #ip_configurations:
+        #  - name: default
+        #    public_ip_address_name: endava-project-pub-ip
+        #    primary: True
 
 
     - name: Create VM for the Python App

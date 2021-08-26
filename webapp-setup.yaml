@@ -46,16 +46,6 @@
         executable: /usr/bin/pip3
         requirements: /home/todor/web/requirements.txt
 
-    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
-    - name: Creating a service for running the Python web app 
-      command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
-
-    - name: Removing the old Nginx default config file
-      command: sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default-ORIGINAL
-
-    - name: Adding the Nginx default configuration file
-      command: sudo cp -arf /home/todor/web/webservers/nginx.conf /etc/nginx/sites-available/default
-
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
     # So we'll just do this manually 
@@ -64,4 +54,20 @@
 
     - name: Starting the service
       command: sudo systemctl start py-webapp
+
+    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
+    - name: Creating a service for running the Python web app 
+      command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
+
+    - name: Removing the old Nginx default config file
+      command: sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default-ORIGINAL
+
+    - name: Adding the Nginx default configuration file
+      command: sudo cp -arf /home/todor/web/webservers/default /etc/nginx/sites-available/default
+
+    - name: Creating a symlink for the subdomain-bound config file
+      command: sudo ln -s /etc/nginx/sites-available/endava-project_todorivanov_net.conf /etc/nginx/sites-enabled/endava-project_todorivanov_net.conf
+
+    - name: Restarting the Nginx service so the changes are applied
+      command: sudo systemctl restart nginx
 

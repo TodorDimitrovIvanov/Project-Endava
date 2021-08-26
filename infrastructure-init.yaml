@@ -161,13 +161,13 @@
         provider: dbformysql
         resource_type: servers
         resource_name: webapp-mariadb-server
-      subresources:
-        - type: firewallrules
-          name: externalaccess
-      body:
-        properties: 
-          startIpAddress: "0.0.0.0"
-          endIpAddress: "255.255.255.255"
+        subresource:
+          - type: firewallrules
+            name: externalaccess
+        body:
+          properties: 
+            startIpAddress: "0.0.0.0"
+            endIpAddress: "255.255.255.255"
       register: output_db_host
         
     - name: Output MySQL public IP Address

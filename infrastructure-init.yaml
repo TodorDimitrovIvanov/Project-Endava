@@ -25,7 +25,7 @@
         resource_group: endava-project-rg
         name: endava_vNet
         address_prefixes: "10.0.0.0/16"
-      state: present
+        state: present
 
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet 
@@ -34,7 +34,7 @@
         resource_group: endava-project-rg
         address_prefix: "10.0.1.0/24"
         virtual_network: endava_vNet
-      state: present
+        state: present
 
     - name: Add a Public IP Address
       azure_rm_publicipaddress:

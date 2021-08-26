@@ -6,6 +6,7 @@
   connection: local
   become_method: su
 
+  # Source: https://sleeplessbeastie.eu/2020/02/07/how-to-instruct-ansible-to-use-specific-version-of-python/
   vars:
     ansible_python_interpreter: /usr/bin/python3
 
@@ -45,7 +46,17 @@
         executable: /usr/bin/pip3
         requirements: /home/todor/web/requirements.txt
 
+    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
+    - name: Creating up a service for running the Python web app 
+      copy: src=services/webapp dest=/lib/systemd/system/py-webapp.service
+
+    - name: Enabling the service
+      service: name=py-webapp enabled=yes 
+
+    - name: Starting the service
+      service: name=py-webapp state=started
+
     # Source: https://stackoverflow.com/questions/35139711/running-python-script-via-ansible
-    - name: Start the Python web app 
-      command: /usr/bin/python3 /home/todor/web/app.py
+    #- name: Start the Python web app 
+    #  command: /usr/bin/python3 /home/todor/web/app.py
 

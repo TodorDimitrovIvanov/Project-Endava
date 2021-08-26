@@ -85,7 +85,7 @@
 
     - name: Output private IP Address
       debug: 
-        msg: "The private IP of the VM is {{ output_private_ip.state.ip_address }}"
+        msg: "The private IP of the VM is {{ output_private_ip }}"
 
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible

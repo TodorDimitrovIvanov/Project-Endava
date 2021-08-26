@@ -77,7 +77,7 @@
         address_prefix: "10.0.0.0/24"
         virtual_network: endava_vNet
         security_group_name: networkSecurityGroup
-        state: present
+        #state: present
 
     #- name: Add a subnet for MySQL server
     #  azure_rm_subnet:

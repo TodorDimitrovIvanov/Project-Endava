@@ -72,7 +72,7 @@
    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet for App server
       azure_rm_subnet:
-        name: webSubnet
+        name: webSubnet2
         resource_group: endava-project-rg
         address_prefix: "10.0.1.0/24"
         virtual_network: endava_vNet
@@ -81,7 +81,7 @@
 
     - name: Add a subnet for MySQL server
       azure_rm_subnet:
-        name: mysqlSubnet
+        name: webSubnet2-mysql
         resource_group: endava-project-rg
         address_prefix: "10.0.2.0/24"
         virtual_network: endava_vNet

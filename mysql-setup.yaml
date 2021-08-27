@@ -8,10 +8,10 @@
     become_method: sudo  
 
   vars_prompt:
-    - name: mysql_host
-      promt: "Enter the MySQL Hostname"
-    - name: mysql_user_pass
-      prompt: "Enter the MySQL User's password"
+  - name: mysql_host
+    promt: "Enter the MySQL Hostname"
+  - name: mysql_user_pass
+    prompt: "Enter the MySQL User's password"
 
 - tasks:    
     # Source: https://github.com/ansible/ansible/issues/5743

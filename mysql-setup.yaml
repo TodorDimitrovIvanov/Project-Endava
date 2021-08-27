@@ -9,7 +9,7 @@
 
   vars_prompt:
   - name: mysql_host
-    promt: "Enter the MySQL Hostname"
+    prompt: "Enter the MySQL Hostname"
   - name: mysql_user_pass
     prompt: "Enter the MySQL User's password"
 

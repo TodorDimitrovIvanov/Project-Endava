@@ -30,5 +30,17 @@
           - "USE {{ mysql_db }};"
           - "CREATE TABLE `tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));"
 
+    # Source: https://phoenixnap.com/kb/ansible-create-file
+    - name: Creating the MySQL config file 
+      copy: 
+        dest: "/home/todor/web/config.json"
+        content: | 
+          {
+          "db_host": "{{ mysql_host }}",
+          "db_name": "{{ mysql_db }}",
+          "db_user": "{{ mysql_user }}",
+          "db_pass": "{{ mysql_user_pass }}"
+          }
+
 # MySQL Host: webapp-mariadb-server.mariadb.database.azure.com
 # MySQL User pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

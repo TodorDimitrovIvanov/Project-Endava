@@ -155,7 +155,7 @@
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
-        name: webapp-mariadb-db
+        name: webapp_mariadb_db
 
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mysqlfirewallrule_module.html

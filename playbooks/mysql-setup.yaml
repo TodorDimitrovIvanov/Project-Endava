@@ -4,7 +4,7 @@
 
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    mysql_db: webapp-mariadb-db
+    mysql_db: webapp_mariadb_db
     mysql_user: todor
     become_method: sudo  
 

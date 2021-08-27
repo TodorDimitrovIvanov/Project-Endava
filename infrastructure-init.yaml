@@ -133,7 +133,8 @@
 
 
 # MYSQL Section           
-
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbserver_module.html
+    # This task creates a MariaDB server 
     - name: Create MariaDB Server
       azure_rm_mariadbserver: 
         resource_group: endava-project-rg
@@ -148,11 +149,40 @@
         admin_username: todor
         admin_password: "{{ db_serv_pass }}"
 
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
+    # And this task creates a DB for it to which we can later connect
     - name: Create MariaDB DB instance
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
         name: webapp-mariadb-db
 
+
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mysqlfirewallrule_module.html
+    - name: Allow external access to MySQL via a Firewall 
+      azure_rm_mysqlfirewallrule:
+        resource_group: endava-project-rg
+        server_name: webapp-mariadb-server
+        name: webapp-mariadb-firewall-allow
+        start_ip_address: 0.0.0.0
+        end_ip_address: 255.255.255.255
+
+    # Code below may be deprecated 
     # Source: https://docs.microsoft.com/en-us/azure/developer/ansible/mysql-configure?tabs=ansible#configure-a-firewall-rule
+    #  azure_rm_resource: 
+    #    api_version: '2017-12-01'
+    #    resource_group: endava-project-rg
+    #    provider: dbformysql
+    #    resource_type: servers
+    #    resource_name: webapp-mariadb-server
+    #    subresource: 
+    #      - type: firewallrules
+    #        name: externalaccess
+    #    body:
+    #      properties: 
+    #        startIpAddress: "0.0.0.0"
+    #        endIpAddress: "255.255.255.255"
+
+
+
 

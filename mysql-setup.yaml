@@ -1,0 +1,25 @@
+---
+- hosts: azure-app-vms
+  connection: local
+
+  vars:
+    mysql_db: webapp-mariadb-db
+    mysql_user: todor
+    become_method: sudo  
+
+  vars_prompt:
+    - name: mysql_host
+      promt: "Enter the MySQL Hostname"
+    - name: mysql_user_pass
+      prompt: "Enter the MySQL User's password"
+
+- tasks:    
+    # Source: https://github.com/ansible/ansible/issues/5743
+    - name: Import .sql file
+      community.mysql.mysql_db:
+        name: "{{ mysql_db }}"
+        login_host: "{{ mysql_host }}"
+        login_user: "{{ mysql_user }}"
+        login_password: "{{ mysql_pass }}"
+        state: import
+        target: 

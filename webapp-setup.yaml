@@ -79,3 +79,7 @@
     - name: Restarting the Nginx service so the changes are applied
       command: sudo systemctl restart nginx
 
+    - name: Restarting the Webapp service so any changes pulled from the github repo can be applied
+      command: sudo systemtctl restart py-webapp
+
+

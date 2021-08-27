@@ -13,11 +13,14 @@
     - name: mysql_user_pass
       prompt: "Enter the MySQL User's password"
 
+# Here we need to remove the - char for some reason. 
+# Most likely cause there's a single task or a single host
+# Source: http://blog.arainho.me/ansible/yml/playbook/error/2016/02/23/ansible-playbook-error.html
   tasks:    
-    # Source: https://github.com/ansible/ansible/issues/5743
+    # Source: 
     - name: Import .sql file
       community.mysql.mysql_query:
-        name: "{{ mysql_db }}"
+        login_db: "{{ mysql_db }}"
         login_host: "{{ mysql_host }}"
         login_user: "{{ mysql_user }}"
         login_password: "{{ mysql_user_pass }}"

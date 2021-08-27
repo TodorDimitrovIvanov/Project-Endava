@@ -19,15 +19,17 @@
 # Source: http://blog.arainho.me/ansible/yml/playbook/error/2016/02/23/ansible-playbook-error.html
   tasks:    
     # Source: 
-    - name: Import .sql file
+    - name: Login and create DB
       community.mysql.mysql_query:
         login_db: "{{ mysql_db }}"
         login_host: "{{ mysql_host }}"
         login_user: "{{ mysql_user }}@{{ mysql_host }}"
         login_password: "{{ mysql_user_pass }}"
-        query: CREATE DATABASE IF NOT EXISTS %(mysql_db)s; USE %(mysql_db)s; CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
+        query: CREATE DATABASE IF NOT EXISTS %(mysql_db)s;
         named_args: 
           remote_db_name: "{{ mysql_db }}"
+
+#  USE %(mysql_db)s; CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
 
 # MySQL Host: webapp-mariadb-server.mariadb.database.azure.com
 # MySQL User pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

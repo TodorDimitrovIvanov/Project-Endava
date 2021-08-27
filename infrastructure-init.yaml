@@ -148,6 +148,11 @@
         version: 10.2
         admin_username: todor
         admin_password: "{{ db_serv_pass }}"
+      register: fully_qualified_domain_name 
+
+    - name: Print the URL of the MySQL server
+      debug:
+        msg: "The URL of the MySQL Host server is {{ fully_qualified_domain_name .state }}" 
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
     # And this task creates a DB for it to which we can later connect

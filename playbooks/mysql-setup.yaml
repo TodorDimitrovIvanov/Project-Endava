@@ -22,8 +22,8 @@
     - name: Import .sql file
       community.mysql.mysql_query:
         login_db: "{{ mysql_db }}"
-        login_host: "{{ mysql_host }}"
-        login_user: "{{ mysql_user }}"
+        #login_host: "{{ mysql_host }}""
+        login_user: "{{ mysql_user }}@{{ mysql_host }}"
         login_password: "{{ mysql_user_pass }}"
         query: CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
 

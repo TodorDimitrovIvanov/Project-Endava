@@ -1,8 +1,6 @@
 ---
-- name: MySQL DB Setup 
+- hosts: azure-db-servs 
   connection: local
-
-  hosts: azure-db-servs
 
   vars:
     mysql_db: webapp-mariadb-db

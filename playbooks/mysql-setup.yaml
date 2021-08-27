@@ -25,7 +25,7 @@
         login_host: "{{ mysql_host }}"
         login_user: "{{ mysql_user }}@{{ mysql_host }}"
         login_password: "{{ mysql_user_pass }}"
-        query: CREATE DATABASE IF NOT EXISTS %(mysql_db); USE %(mysql_db); CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
+        query: CREATE DATABASE IF NOT EXISTS %(mysql_db)s; USE %(mysql_db)s; CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
         named_args: 
           remote_db_name: "{{ mysql_db }}"
 

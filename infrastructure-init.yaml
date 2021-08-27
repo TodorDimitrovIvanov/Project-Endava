@@ -152,7 +152,7 @@
 
     - name: Print the URL of the MySQL server
       debug:
-        msg: "The URL of the MySQL Host server is {{ fully_qualified_domain_name .state }}" 
+        msg: "The URL of the MySQL Host server is {{ fully_qualified_domain_name }}" 
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
     # And this task creates a DB for it to which we can later connect
@@ -167,7 +167,7 @@
     - name: Allow external access to MySQL via a Firewall 
       azure_rm_mysqlfirewallrule:
         resource_group: endava-project-rg
-        server_name: webapp-mariadb-server
+        server_name: webapp-mariadb-server.mariadb.database.azure.com
         name: webapp-mariadb-firewall-allow
         start_ip_address: 0.0.0.0
         end_ip_address: 255.255.255.255
@@ -191,3 +191,5 @@
 
 
 
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

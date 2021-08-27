@@ -9,9 +9,9 @@
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/infrastructure-init.yaml```
 ## Add the newly created services to your Ansible hosts file
 ```user@localhost:~/Project-Endava# vim /etc/ansible/hosts```
-## Deploy the Python web app
-```user@localhost:~/Project-Endava# ansible-playbook playbooks/webapp-setup.yaml```
 ## Deploy the MySQL DB 
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/mysql-setup.yaml```
+## Deploy the Python web app
+```user@localhost:~/Project-Endava# ansible-playbook playbooks/webapp-setup.yaml```
 ## Verify by visiting the IP address of your Azure VM:
 [Example](https://imgur.com/a/mWlR40w)

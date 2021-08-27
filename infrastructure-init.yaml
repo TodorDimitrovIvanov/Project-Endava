@@ -148,11 +148,11 @@
         version: 10.2
         admin_username: todor
         admin_password: "{{ db_serv_pass }}"
-      register: fully_qualified_domain_name 
+      register: mysql_state_dict 
 
     - name: Print the URL of the MySQL server
       debug:
-        msg: "The URL of the MySQL Host server is {{ fully_qualified_domain_name }}" 
+        msg: "The URL of the MySQL Host server is {{ mysql_state_dict.fully_qualified_domain_name }}" 
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
     # And this task creates a DB for it to which we can later connect
@@ -167,7 +167,7 @@
     - name: Allow external access to MySQL via a Firewall 
       azure_rm_mysqlfirewallrule:
         resource_group: endava-project-rg
-        server_name: webapp-mariadb-server.mariadb.database.azure.com
+        server_name: webapp-mariadb-server
         name: webapp-mariadb-firewall-allow
         start_ip_address: 0.0.0.0
         end_ip_address: 255.255.255.255

@@ -181,10 +181,11 @@
         network_interfaces: monitoring_netInterface
         os_type: Linux
         image:
-          offer: CoreOS
-          publisher: CoreOS
-          sku: Stable
-          version: latest 
+          offer: CentOS
+          publisher: OpenLogic
+          sku: '7.1'
+          version: latest
+ 
 
 
     # MySQL Section

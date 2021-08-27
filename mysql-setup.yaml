@@ -1,6 +1,8 @@
 ---
-- hosts: azure-app-vms
+- name: MySQL DB Setup 
   connection: local
+
+  hosts: azure-db-servs
 
   vars:
     mysql_db: webapp-mariadb-db

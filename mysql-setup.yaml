@@ -8,10 +8,10 @@
     become_method: sudo  
 
   vars_prompt:
-  - name: mysql_host
-    prompt: "Enter the MySQL Hostname"
-  - name: mysql_user_pass
-    prompt: "Enter the MySQL User's password"
+    - name: mysql_host
+      prompt: "Enter the MySQL Hostname"
+    - name: mysql_user_pass
+      prompt: "Enter the MySQL User's password"
 
 - tasks:    
     # Source: https://github.com/ansible/ansible/issues/5743
@@ -22,3 +22,8 @@
         login_user: "{{ mysql_user }}"
         login_password: "{{ mysql_pass }}"
         query: CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
+
+
+
+# MySQL Host: webapp-mariadb-server.mariadb.database.azure.com
+# MySQL User pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

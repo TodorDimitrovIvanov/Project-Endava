@@ -165,7 +165,7 @@
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mysqlfirewallrule_module.html
     - name: Allow external access to MySQL via a Firewall 
-      azure_rm_mysqlfirewallrule:
+      azure_rm_mariadbfirewallrule:
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
         name: webapp-mariadb-firewall-allow

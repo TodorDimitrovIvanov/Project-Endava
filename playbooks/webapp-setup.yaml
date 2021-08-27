@@ -98,6 +98,6 @@
       command: sudo systemctl restart nginx
 
     - name: Restarting the Webapp service so any changes pulled from the github repo can be applied
-      command: sudo systemtctl restart py-webapp
+      command: sudo systemctl restart py-webapp
 
 

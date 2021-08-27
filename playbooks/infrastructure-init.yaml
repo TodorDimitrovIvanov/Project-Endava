@@ -98,7 +98,6 @@
             primary: True
 
 
-
     - name: Create VM for the Python App
       azure_rm_virtualmachine:
         resource_group: endava-project-rg

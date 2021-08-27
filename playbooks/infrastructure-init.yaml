@@ -1,3 +1,7 @@
+# Git repo token: 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
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
+
 - hosts: localhost
   connection: local
 
@@ -162,3 +166,6 @@
         name: webapp-mariadb-firewall-allow
         start_ip_address: 0.0.0.0
         end_ip_address: 255.255.255.255
+
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

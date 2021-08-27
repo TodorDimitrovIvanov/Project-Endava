@@ -27,7 +27,7 @@
         login_password: "{{ mysql_user_pass }}"
         query: CREATE DATABASE IF NOT EXISTS %(mysql_db); USE %(mysql_db); CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));
         named_args: 
-          remote_db_name: mysql_db
+          remote_db_name: "{{ mysql_db }}"
 
 # MySQL Host: webapp-mariadb-server.mariadb.database.azure.com
 # MySQL User pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

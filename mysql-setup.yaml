@@ -16,10 +16,9 @@
 - tasks:    
     # Source: https://github.com/ansible/ansible/issues/5743
     - name: Import .sql file
-      community.mysql.mysql_db:
+      community.mysql.mysql_query:
         name: "{{ mysql_db }}"
         login_host: "{{ mysql_host }}"
         login_user: "{{ mysql_user }}"
         login_password: "{{ mysql_pass }}"
-        state: import
-        target: 
+        query: CREATE TABLE `BucketList`.`tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));

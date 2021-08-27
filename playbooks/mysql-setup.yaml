@@ -1,0 +1,31 @@
+---
+- hosts: azure-db-servs 
+  connection: local  
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    mysql_db: webapp_mariadb_db
+    mysql_user: todor
+    become_method: sudo  
+
+  vars_prompt:
+    - name: mysql_host
+      prompt: "Enter the MySQL Hostname"
+    - name: mysql_user_pass
+      prompt: "Enter the MySQL User's password"
+
+# Here we need to remove the - char for some reason. 
+# Most likely cause there's a single task or a single host
+# Source: http://blog.arainho.me/ansible/yml/playbook/error/2016/02/23/ansible-playbook-error.html
+  tasks:    
+    # Source: 
+    - name: Login and create DB
+      community.mysql.mysql_query:
+        login_db: "{{ mysql_db }}"
+        login_host: "{{ mysql_host }}"
+        login_user: "{{ mysql_user }}@{{ mysql_host }}"
+        login_password: "{{ mysql_user_pass }}"
+        query: 
+          - "CREATE DATABASE IF NOT EXISTS {{ mysql_db }};"
+          - "USE {{ mysql_db }};"
+          - "CREATE TABLE `tbl_user` (`user_id` BIGINT NULL AUTO_INCREMENT, `user_name` VARCHAR(45) NULL, `user_username` VARCHAR(45) NULL, `user_password` VARCHAR(45) NULL,  PRIMARY KEY (`user_id`));"

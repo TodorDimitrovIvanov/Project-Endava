@@ -16,16 +16,12 @@
       prompt: "Enter the Web App server's administrator password"
 
   tasks:
-    - name: Make temp directory
-      tempfile:
-        state: directory
-      register: temp_git_archive
-      delegate_to: localhost
-      changed_when: False
-    
     # Source: https://opensource.com/article/17/8/ansible-environment-management
     # The source above doesn't work because the SSH account is not root but has sudo permissions 
     # Therefore to solve this issue we need to run a command instead 
+    - name: Updating apt
+      command: sudo apt-get update 
+    
     - name: Installing git  on the target VM
       command: sudo apt-get install -y git
 
@@ -34,6 +30,9 @@
 
     - name: Installing setuptools for Python 3
       command: sudo apt-get install -y python3-setuptools
+
+    - name: Installing Nginx 
+      command: sudo apt-get install -y nginx
 
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 
@@ -47,10 +46,6 @@
         executable: /usr/bin/pip3
         requirements: /home/todor/web/requirements.txt
 
-    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
-    - name: Creating a service for running the Python web app 
-      command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
-
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
     # So we'll just do this manually 
@@ -59,4 +54,32 @@
 
     - name: Starting the service
       command: sudo systemctl start py-webapp
+
+    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
+    - name: Creating a service for running the Python web app 
+      command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
+
+    - name: Removing the old Nginx default config file
+      command: sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default-ORIGINAL
+
+    - name: Adding the Nginx default configuration file
+      command: sudo cp -arf /home/todor/web/webservers/default /etc/nginx/sites-available/default
+
+    - name: Adding the Nginx subdomain-bound config file
+      command: sudo cp -arf /home/todor/web/webservers/endava-project_todorivanov_net.conf /etc/nginx/sites-available/endava-project_todorivanov_net.conf
+
+    - name: Creating a symlink for the subdomain-bound config file
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/endava-project_todorivanov_net.conf
+        dest: /etc/nginx/sites-enabled/endava-project_todorivanov_net.conf
+        owner: todor
+        group: todor
+        state: link 
+
+    - name: Restarting the Nginx service so the changes are applied
+      command: sudo systemctl restart nginx
+
+    - name: Restarting the Webapp service so any changes pulled from the github repo can be applied
+      command: sudo systemtctl restart py-webapp
+
 

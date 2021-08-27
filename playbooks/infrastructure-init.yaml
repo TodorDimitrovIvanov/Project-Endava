@@ -1,7 +1,3 @@
-# Git repo token: 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
-# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
-# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
-
 - hosts: localhost
   connection: local
 
@@ -25,48 +21,78 @@
         resource_group: endava-project-rg
         name: endava_vNet
         address_prefixes: "10.0.0.0/16"
-    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
-    - name: Add a subnet 
-      azure_rm_subnet:
+        state: present
+
+    - name: Add a Public IP Address
+      azure_rm_publicipaddress:
         resource_group: endava-project-rg
-        name: webSubnet
-        address_prefix: "10.0.1.0/24"
-        virtual_network: endava_vNet
+        allocation_method: Static
+        name: endava_project_pub_ip
+        # Register allows you to populate variables based on the output of Ansible tasks.
+      register: output_ip_address
+
+    - name: Output public IP Address
+      debug:
+        msg: "The public IP is {{ output_ip_address.state.ip_address }}"
+
     # It seems a network security group is necessary to define the allowed ports and protocols
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    # Source: https://medium.com/@pavithra_38952/building-infrastructure-with-microsoft-azure-and-ansible-e5245e5b33a8
     - name: Create Network Security Group
       azure_rm_securitygroup:
         resource_group: endava-project-rg
         name: networkSecurityGroup
         rules:
-          - name: 'allow_web_traffic'
-            protocol: Tcp
-            destination_port_range:
-              - 80
-              - 443
-            access: Allow
-            priority: 1001
-            direction: Inbound
-          - name: 'allow_ssh_traffic'
-            protocol: Tcp
-            destination_port_range:
-              - 22
-            access: Allow
-            priority: 1002
-            direction: Inbound
+        - name: 'ssh' 
+          protocol: Tcp 
+          destination_port_range: 22 
+          access: Allow
+          priority: 100
+          direction: Inbound 
+        - name: 'http' 
+          protocol: Tcp 
+          destination_port_range: 80 
+          access: Allow
+          priority: 101 
+          direction: Inbound 
+        - name: 'https' 
+          protocol: Tcp 
+          destination_port_range: 443 
+          access: Allow
+          priority: 102 
+          direction: Inbound 
+        - name: 'py-webapp' 
+          protocol: Tcp 
+          destination_port_range: 3001
+          access: Allow
+          priority: 103 
+          direction: Inbound 
             
+   # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+    - name: Add a subnet for App server
+      azure_rm_subnet:
+        name: webSubnet2
+        resource_group: endava-project-rg
+        address_prefix: "10.0.0.0/24"
+        virtual_network: endava_vNet
+        #security_group_name: networkSecurityGroup
+        state: present
+
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
-    - name: Create a network interface
+    # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible
+    - name: Create a network interface for the web app VM
       azure_rm_networkinterface:
         name: webapp_netInterface
         resource_group: endava-project-rg
         virtual_network: endava_vNet
-        subnet_name: webSubnet
+        subnet: webSubnet2
         security_group: networkSecurityGroup
         ip_configurations:
           - name: default
-            public_ip_address_name: webPublicIP
+            public_ip_address_name: endava_project_pub_ip
+            private_ip_address: output_private_ip.state.ip_address
             primary: True
+
 
 
     - name: Create VM for the Python App
@@ -80,6 +106,11 @@
         vm_size: Standard_B1s
         admin_username: todor
         admin_password: "{{ app_serv_pass }}"
+        open_ports: 
+          - 22
+          - 80
+          - 443
+          - 3001
         network_interfaces: webapp_netInterface
         # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_virtualmachine_module.html#ansible-collections-azure-azcollection-azure-rm-virtualmachine-module
         os_type: Linux
@@ -91,6 +122,10 @@
           sku: '10'
           version: latest 
 
+
+# MYSQL Section           
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbserver_module.html
+    # This task creates a MariaDB server 
     - name: Create MariaDB Server
       azure_rm_mariadbserver: 
         resource_group: endava-project-rg
@@ -104,9 +139,26 @@
         version: 10.2
         admin_username: todor
         admin_password: "{{ db_serv_pass }}"
+      register: mysql_state_dict 
 
-    - name: Create MariaDB DB
+    - name: Print the URL of the MySQL server
+      debug:
+        msg: "The URL of the MySQL Host server is {{ mysql_state_dict.fully_qualified_domain_name }}" 
+
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
+    # And this task creates a DB for it to which we can later connect
+    - name: Create MariaDB DB instance
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
         server_name: webapp-mariadb-server
-        name: webapp-mariadb-db
+        name: webapp_mariadb_db
+
+
+    # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mysqlfirewallrule_module.html
+    - name: Allow external access to MySQL via a Firewall 
+      azure_rm_mariadbfirewallrule:
+        resource_group: endava-project-rg
+        server_name: webapp-mariadb-server
+        name: webapp-mariadb-firewall-allow
+        start_ip_address: 0.0.0.0
+        end_ip_address: 255.255.255.255

@@ -16,7 +16,8 @@
 ## Deploy the Python web app
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/webapp-setup.yaml```
 - Here you need to provie the previously defined Web app server's password
-- Here you need to provie the previously defined MySQL server's password
+- Here you need to provie the previously provided MySQL (during the execution of infrastructure-setup.yaml) server's hostname (URL)
+- Here you need to provide the previously defined MySQL server's admin password
 ## Deploy the MySQL DB 
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/mysql-setup.yaml```
 - Here you need to provie the previously defined MySQL server's password

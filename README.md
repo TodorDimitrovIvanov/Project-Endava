@@ -14,4 +14,4 @@
 ## Deploy the MySQL DB 
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/mysql-setup.yaml```
 ## Verify by visiting the IP address of your Azure VM:
-![Example](https://imgur.com/a/mWlR40w)
+[Example](https://imgur.com/a/mWlR40w)

@@ -17,6 +17,8 @@
         name: endava-project-rg
         location: germanywestcentral
 
+    # Virtual Network
+    #-------------------------   
     # A virtual network is required for the VM setup. Otherwise we receive this error:
     # fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error: unable to find virtual network in resource group endava-project-rg. A virtual network with at least one subnet must exist in order to create a NIC for the virtual machine."}
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon

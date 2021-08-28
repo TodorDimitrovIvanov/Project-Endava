@@ -27,6 +27,9 @@
         address_prefixes: "10.0.0.0/16"
         state: present
 
+
+    # IP's 
+    # -----------------------
     - name: Add a Public IP Address
       azure_rm_publicipaddress:
         resource_group: endava-project-rg
@@ -183,9 +186,8 @@
         image:
           offer: CentOS
           publisher: OpenLogic
-          sku: '7.1'
+          sku: '7.5'
           version: latest
- 
 
 
     # MySQL Section

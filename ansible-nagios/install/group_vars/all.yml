@@ -4,7 +4,7 @@
 ## Ansible user
 # change this if running Ansible as a non-root user
 # would require sudo, e.g. AWS EC2 uses ec-user
-ansible_system_user: root
+ansible_system_user: todor 
 
 ### Firewall management ###
 # Set to true to deploy firewall rules for nagios server

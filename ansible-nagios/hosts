@@ -6,6 +6,7 @@ nagios:
       ansible_port: 22
       ansible_user: todor
       ansible_password: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+      become: yes
 servers:
   hosts: 
     vm1:
@@ -15,3 +16,4 @@ servers:
       ansible_user: todor
       ansible_password: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
       #ansible_ssh_private_key_file: ~/.ansible/keys/azure-webapp-serv-01.key
+      become: yes

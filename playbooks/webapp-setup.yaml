@@ -9,16 +9,19 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
     remote_user: todor
-    become_method: sudo
+    become: yes
 
   vars_prompt:
-    - name: app_serv_pass
-      prompt: "Enter the Web App server's administrator password"
+    - name: app_mysql_serv
+      prompt: "Enter the MySQL server's hostname"
+    - name: app_mysql_pass
+      prompt: "Enter the MySQL user's password"
 
   tasks:
     # Source: https://opensource.com/article/17/8/ansible-environment-management
     # The source above doesn't work because the SSH account is not root but has sudo permissions 
     # Therefore to solve this issue we need to run a command instead 
+    # Alternatively, the 'become' should solve this issue but for the moment it doesn't seem to work
     - name: Updating apt
       command: sudo apt-get update 
     
@@ -45,6 +48,20 @@
       pip: 
         executable: /usr/bin/pip3
         requirements: /home/todor/web/requirements.txt
+
+
+    # Source: https://phoenixnap.com/kb/ansible-create-file
+    - name: Creating the MySQL config file 
+      copy: 
+        dest: "/home/todor/web/config.json"
+        content: | 
+          {
+          "db_host": "{{ app_mysql_serv }}",
+          "db_name": "webapp_mariadb_db",
+          "db_user": "todor",
+          "db_pass": "{{ app_mysql_pass }}"
+          }
+
 
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
@@ -80,6 +97,6 @@
       command: sudo systemctl restart nginx
 
     - name: Restarting the Webapp service so any changes pulled from the github repo can be applied
-      command: sudo systemtctl restart py-webapp
+      command: sudo systemctl restart py-webapp
 
 

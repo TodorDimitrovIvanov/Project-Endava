@@ -1,5 +1,12 @@
+# Git repo token: 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
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
+
 - hosts: localhost
   connection: local
+
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
 
   vars_prompt:
     - name: app_serv_pass
@@ -13,6 +20,8 @@
         name: endava-project-rg
         location: germanywestcentral
 
+    # Virtual Network
+    #-------------------------   
     # A virtual network is required for the VM setup. Otherwise we receive this error:
     # fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error: unable to find virtual network in resource group endava-project-rg. A virtual network with at least one subnet must exist in order to create a NIC for the virtual machine."}
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
@@ -23,6 +32,9 @@
         address_prefixes: "10.0.0.0/16"
         state: present
 
+
+    # IP's 
+    # -----------------------
     - name: Add a Public IP Address
       azure_rm_publicipaddress:
         resource_group: endava-project-rg
@@ -35,6 +47,8 @@
       debug:
         msg: "The public IP is {{ output_ip_address.state.ip_address }}"
 
+    # Network Security Groups
+    # -----------------------
     # It seems a network security group is necessary to define the allowed ports and protocols
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source: https://medium.com/@pavithra_38952/building-infrastructure-with-microsoft-azure-and-ansible-e5245e5b33a8
@@ -67,17 +81,22 @@
           access: Allow
           priority: 103 
           direction: Inbound 
-            
-   # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
+          
+
+    # Subnets
+    # -----------------------
+    # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     - name: Add a subnet for App server
       azure_rm_subnet:
         name: webSubnet2
         resource_group: endava-project-rg
         address_prefix: "10.0.0.0/24"
         virtual_network: endava_vNet
-        #security_group_name: networkSecurityGroup
         state: present
 
+
+    # NIC's 
+    # -----------------------
     # Source: https://dev.to/cloudskills/deploying-resources-to-azure-with-ansible-1pon
     # Source !!!!: https://docs.microsoft.com/en-us/azure/developer/ansible/vm-configure?tabs=ansible
     - name: Create a network interface for the web app VM
@@ -94,7 +113,8 @@
             primary: True
 
 
-
+    # VM's 
+    # -----------------------
     - name: Create VM for the Python App
       azure_rm_virtualmachine:
         resource_group: endava-project-rg
@@ -121,9 +141,13 @@
           publisher: Debian
           sku: '10'
           version: latest 
+        ssh_password_enabled: False
+        ssh_public_keys: 
+          - path: /home/todor/.ssh/authorized_keys
+            key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoYio+pcck5pYico6DKFlMvqekdOXEg8+B27aiTUI41GCKzNYEvvGLEFoM/Fum0Ytp3jRhY+6LtETOd/lN0ocS20q59v4hmLq9pbznesmfj8OICktx+NGakWXNeJgdtxJAzdg7FY7ZOcM20om8Hu1xnWxh4lL+ep+aPUxcA7S2cuTXoOyrdz5ls6MseBZP/FzC3nOkWGlIKgBuayxVzWCVw+eJGSeC9eiBFGwwbehj45uy9sfVCMUsqXexzuESqh56meIe/SOrduiDWkgHwx7OwZN/4ABWWAaf+RtPOjnUfk/5oufI0NfRYWrDempWGQ1k6FFLocJGnP/FoCcMweDR root@localhost"
 
-
-# MYSQL Section           
+    # MySQL Section
+    #-------------------------           
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbserver_module.html
     # This task creates a MariaDB server 
     - name: Create MariaDB Server
@@ -153,7 +177,7 @@
         server_name: webapp-mariadb-server
         name: webapp_mariadb_db
 
-
+    # MySQL Firewall 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mysqlfirewallrule_module.html
     - name: Allow external access to MySQL via a Firewall 
       azure_rm_mariadbfirewallrule:
@@ -162,3 +186,6 @@
         name: webapp-mariadb-firewall-allow
         start_ip_address: 0.0.0.0
         end_ip_address: 255.255.255.255
+
+# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
+# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC

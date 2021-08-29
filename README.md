@@ -13,14 +13,14 @@
 ```Enter the DB server's administrator password```
 ## Add the newly created services to your Ansible hosts file
 ```user@localhost:~/Project-Endava# vim /etc/ansible/hosts```
+## Deploy the MySQL DB 
+```user@localhost:~/Project-Endava# ansible-playbook playbooks/mysql-setup.yaml```
+- Here you need to provie the previously defined MySQL server's password
 ## Deploy the Python web app
 ```user@localhost:~/Project-Endava# ansible-playbook playbooks/webapp-setup.yaml```
 - Here you need to provie the previously defined Web app server's password
 - Here you need to provie the previously provided MySQL (during the execution of infrastructure-setup.yaml) server's hostname (URL)
 - Here you need to provide the previously defined MySQL server's admin password
-## Deploy the MySQL DB 
-```user@localhost:~/Project-Endava# ansible-playbook playbooks/mysql-setup.yaml```
-- Here you need to provie the previously defined MySQL server's password
 ## Verify by visiting the IP address of your Azure VM:
 [Example](https://imgur.com/a/mWlR40w)
 # Installing Monitoring system

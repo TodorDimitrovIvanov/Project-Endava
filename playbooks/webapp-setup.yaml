@@ -66,11 +66,6 @@
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
     # So we'll just do this manually 
-    - name: Enabling the service
-      command: sudo systemctl enable py-webapp
-
-    - name: Starting the service
-      command: sudo systemctl start py-webapp
 
     # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
     - name: Creating a service for running the Python web app 
@@ -92,6 +87,12 @@
         owner: todor
         group: todor
         state: link 
+
+    - name: Enabling the web app service
+      command: sudo systemctl enable py-webapp
+
+    - name: Starting the web app service
+      command: sudo systemctl start py-webapp
 
     - name: Restarting the Nginx service so the changes are applied
       command: sudo systemctl restart nginx

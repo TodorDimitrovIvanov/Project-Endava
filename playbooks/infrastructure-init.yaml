@@ -172,10 +172,6 @@
           publisher: OpenLogic
           sku: '7.5'
           version: latest
-        ssh_password_enabled: False
-        ssh_public_keys: 
-          - path: /home/todor/.ssh/authorized_keys
-            key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDoYio+pcck5pYico6DKFlMvqekdOXEg8+B27aiTUI41GCKzNYEvvGLEFoM/Fum0Ytp3jRhY+6LtETOd/lN0ocS20q59v4hmLq9pbznesmfj8OICktx+NGakWXNeJgdtxJAzdg7FY7ZOcM20om8Hu1xnWxh4lL+ep+aPUxcA7S2cuTXoOyrdz5ls6MseBZP/FzC3nOkWGlIKgBuayxVzWCVw+eJGSeC9eiBFGwwbehj45uy9sfVCMUsqXexzuESqh56meIe/SOrduiDWkgHwx7OwZN/4ABWWAaf+RtPOjnUfk/5oufI0NfRYWrDempWGQ1k6FFLocJGnP/FoCcMweDR root@localhost"
 
     - name: Create VM for Nagios monitoring system 
       azure_rm_virtualmachine: 
@@ -196,11 +192,6 @@
           publisher: OpenLogic
           sku: '7.5'
           version: latest
-        ssh_password_enabled: False
-        ssh_public_keys: 
-          - path: /home/todor/.ssh/authorized_keys
-            key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDao3x8MHNMR2aolvsfU25BzeCoQD1Bvw+6JwhQ2UCVc67gWwpypP84ZqS2izacsO7or5rS1w9EvCM5tYeM0Dc2pYadGeLNZW8innkftcs2JpCsznHfysoRB8iAuAIQuiSGHlL8jdHR94TNlbzYY0Ei+sg6h771gFxrQL/ti5EIvUSKpH/uFIi+BPS65mmBbau1qLfrNwXbVLhlBYDfxHgwCE1DIcy9xIu4RzwARZU9S3GRnitaP8bcxeyUKq/QRc1zswV20B02dafTFw4k8ugf0ZE8YhARZXoBhs9cdGETDuYbAjchd3+w8s5eJrLv+R6GgBCsBozcVZbmB71Abu6b root@localhost"
-
 
     # MySQL Section
     #-------------------------           

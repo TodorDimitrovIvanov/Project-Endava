@@ -1,5 +1,7 @@
 ---
 # install and setup NRPE and checks
+- vars: 
+  ansible_python_interpreter: /usr/bin/python3
 
 - name: Check Operating System
   fail:

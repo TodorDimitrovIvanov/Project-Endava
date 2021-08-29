@@ -26,6 +26,8 @@
 # Installing Monitoring system
 ## Create a NetData account
 From this [link](https://www.netdata.cloud/)
+## Edit the ./netdata/vars/main.yml file
+And replace "claim_token" and "claim_rooms" with the data from your NetData account
 ## Edit the ./ansible-quickstart/hosts file
 And add the IP address of the host that's to be monitored, along with the SSH Key and the SSH username
 ## Run the NetData playbook

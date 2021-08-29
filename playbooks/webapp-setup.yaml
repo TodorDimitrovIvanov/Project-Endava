@@ -12,8 +12,6 @@
     become: yes
 
   vars_prompt:
-    - name: app_serv_pass
-      prompt: "Enter the Web App server's administrator password"
     - name: app_mysql_serv
       prompt: "Enter the MySQL server's hostname"
     - name: app_mysql_pass

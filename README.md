@@ -23,3 +23,12 @@
 - Here you need to provie the previously defined MySQL server's password
 ## Verify by visiting the IP address of your Azure VM:
 [Example](https://imgur.com/a/mWlR40w)
+# Installing Monitoring system
+## Create a NetData account
+From this [link](https://www.netdata.cloud/)
+## Edit the ./ansible-quickstart/hosts file
+And add the IP address of the host that's to be monitored, along with the SSH Key and the SSH username
+## Run the NetData playbook
+```ansible-playbook -i hosts ./ansible-quickstart/tasks/main.yml```
+## Verify the setup
+[Example](https://imgur.com/a/RuEDwGR)

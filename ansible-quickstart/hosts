@@ -1,0 +1,1 @@
+20.79.203.149  hostname=node-01 ansible_user=todor  ansible_ssh_private_key_file=/root/endava-keys/endava-webapp

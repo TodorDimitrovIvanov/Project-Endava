@@ -28,10 +28,11 @@
           and ansible_system == "Linux"
   ignore_errors: true
 
-- name: Switch to Python3 by Default (Fedora/EL8)
-  command: alternatives --install /usr/bin/python python /usr/bin/python3 1
-  when: ansible_python_version|int < 3.6 and ansible_distribution_major_version|int >= 8
-        and ansible_system == "Linux"
+# Per Debian policy, python refers to Python 2 and python3 refers to Python 3. Don't try to change this system-wide or you are in for the sort of trouble you already discovered.
+#- name: Switch to Python3 by Default (Fedora/EL8)
+#  command: alternatives --install /usr/bin/python python /usr/bin/python3 1
+#  when: ansible_python_version|int < 3.6 and ansible_distribution_major_version|int >= 8
+#        and ansible_system == "Linux"
 
 - name: Install NRPE and Common Plugins
   yum:

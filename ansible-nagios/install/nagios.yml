@@ -20,6 +20,8 @@
   roles:
     - { role: nagios_client }
     - { role: firewall_client, when: manage_firewall_client|bool }
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
 
 # role for nagios server
 - hosts: nagios
@@ -29,3 +31,5 @@
     - { role: nagios }
     - { role: firewall, when: manage_firewall|bool }
     - { role: instructions }
+  vars:
+    ansible_python_interpreter: /usr/bin/python3

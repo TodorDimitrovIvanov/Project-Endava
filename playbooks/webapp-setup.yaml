@@ -23,21 +23,21 @@
     # Source: https://opensource.com/article/17/8/ansible-environment-management
     # The source above doesn't work because the SSH account is not root but has sudo permissions 
     # Therefore to solve this issue we need to run a command instead 
-    # Alternatively, the 'become' should solve this issue but for the moment it doesn't seem to work 
+    # Alternatively, the 'become' should solve this issue but for the moment it doesn't seem to work
+    - name: Updating apt
+      command: sudo apt-get update 
+    
     - name: Installing git  on the target VM
-      command: sudo yum install -y git
+      command: sudo apt-get install -y git
 
     - name: Installing pip3 on the target VM
-      command: sudo yum install -y python3-pip
+      command: sudo apt-get install -y python3-pip
 
     - name: Installing setuptools for Python 3
-      command: sudo yum install -y python3-setuptools
+      command: sudo apt-get install -y python3-setuptools
 
     - name: Installing Nginx 
-      command: sudo yum install -y nginx
-
-    #- name: Installing python-dnf (required by the Nagios monitoring system)
-    #  command: sudo yum install -y python3-dnf
+      command: sudo apt-get install -y nginx
 
     # Source: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html
     - name: Clone the repo in specified directory 

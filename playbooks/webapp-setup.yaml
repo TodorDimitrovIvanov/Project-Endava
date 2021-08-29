@@ -74,19 +74,21 @@
     - name: Removing the old Nginx default config file
       command: sudo mv /etc/nginx/sites-available/default /etc/nginx/sites-available/default-ORIGINAL
 
-    - name: Adding the Nginx default configuration file
+    - name: Adding the Nginx configuration as default as it handles all incoming traffic
       command: sudo cp -arf /home/todor/web/webservers/default /etc/nginx/sites-available/default
 
     - name: Adding the Nginx subdomain-bound config file
       command: sudo cp -arf /home/todor/web/webservers/endava-project_todorivanov_net.conf /etc/nginx/sites-available/endava-project_todorivanov_net.conf
 
-    - name: Creating a symlink for the subdomain-bound config file
-      ansible.builtin.file:
-        src: /etc/nginx/sites-available/endava-project_todorivanov_net.conf
-        dest: /etc/nginx/sites-enabled/endava-project_todorivanov_net.conf
-        owner: todor
-        group: todor
-        state: link 
+    # Not implemented since I have no info on how to map a subdomain to this VM 
+    # Most likely it will have to do something with the virtual network 
+    #- name: Creating a symlink for the subdomain-bound config file
+    #  ansible.builtin.file:
+    #    src: /etc/nginx/sites-available/endava-project_todorivanov_net.conf
+    #    dest: /etc/nginx/sites-enabled/endava-project_todorivanov_net.conf
+    #    owner: todor
+    #    group: todor
+    #    state: link 
 
     - name: Enabling the web app service
       command: sudo systemctl enable py-webapp

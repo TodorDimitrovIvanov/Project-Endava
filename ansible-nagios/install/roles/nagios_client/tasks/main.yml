@@ -1,8 +1,5 @@
 ---
 # install and setup NRPE and checks
-- vars: 
-  ansible_python_interpreter: /usr/bin/python3
-
 - name: Check Operating System
   fail:
     msg="You're not running a supported operating system (CentOS, RHEL 7+, Fedora or FreeBSD)"
@@ -45,6 +42,7 @@
   when: ansible_distribution_major_version|int <= 7 and ansible_os_family == "RedHat"
 
 - name: Install NRPE and Common Plugins for Fedora/EL8
+  ansible_python_interpreter: /usr/bin/python3
   dnf:
     name: ['nrpe', 'nagios-plugins-load', 'nagios-plugins-uptime', 'nagios-plugins-swap', 'nagios-plugins-procs',
     'nagios-plugins-users', 'nagios-plugins-disk', 'nagios-plugins-tcp']

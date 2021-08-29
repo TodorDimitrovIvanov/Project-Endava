@@ -1,5 +1,7 @@
 packaging
+wheel
 requests[security]
+setuptools-rust
 xmltodict
 azure-cli-core==2.11.1
 azure-cli-nspkg==3.0.2

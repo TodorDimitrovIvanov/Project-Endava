@@ -92,7 +92,6 @@
         owner: todor
         group: todor
         state: link 
-        become: yes
 
     - name: Restarting the Nginx service so the changes are applied
       command: sudo systemctl restart nginx

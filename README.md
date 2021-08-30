@@ -34,4 +34,3 @@ And add the IP address of the host that's to be monitored, along with the SSH Ke
 ```ansible-playbook -i hosts ./ansible-quickstart/tasks/main.yml```
 ## Verify the setup
 [Example](https://imgur.com/a/RuEDwGR)
-

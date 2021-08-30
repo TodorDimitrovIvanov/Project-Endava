@@ -1,18 +1,13 @@
 ---
-# Source: https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
 azure-app-vms:
   hosts:
     vm1:
-      ansible_host: 51.116.113.215
+      ansible_host: ___VM_IP___
       ansible_connection: ssh
       ansible_port: 22
       ansible_user: todor
-      ansible_password: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
-      #ansible_ssh_private_key_file: ~/.ansible/keys/azure-webapp-serv-01.key
-
-# How to connect to the MySQL server
-# Source: https://www.youtube.com/watch?v=UsEcIftkQB8
+      ansible_ssh_private_key_file: /root/endava-keys/endava-webapp
 azure-db-servs:
   hosts:
     serv1:
-        ansible_host: webapp-mariadb-server.mariadb.database.azure.com
+        ansible_host: ___MYSQL_HOSTNAME___ 

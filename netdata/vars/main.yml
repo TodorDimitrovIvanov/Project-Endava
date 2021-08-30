@@ -8,8 +8,8 @@
 # Copy those strings into the variables below. `claim_url` should be
 # `https://app.netdata.cloud`. Read more:
 # https://learn.netdata.cloud/docs/agent/claim
-claim_token: R8bIgF88HU3RhPfNU2UITHDpxkLbC9CHywaEXlgFTnKmQKn2LD9O2bZAhFtWuW-bPG3dygDW1JI3rJtAVn0DvtuUNvaeDksNWcpyGMPGsNcd65T1z0NprvNVxJ_8oUimkETKrfU
-claim_rooms: 6a9f9d35-831c-4d1b-b807-aa048a8b7b81,5e17ec9a-d4a6-4a71-b5b0-16dd7ab42ee3
+claim_token: CHANGE_ME 
+claim_rooms: CHANGE_ME 
 claim_url: https://app.netdata.cloud
 
 # Force re-claiming of nodes to Netdata Cloud. Read more:

@@ -1,6 +1,15 @@
-# Git repo token: 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
-# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
-# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
+# This file connects to Azure and sets up all of the infrastructure the project needs 
+# This includes:
+#- Resource Group
+#- Virtual Network
+#- Subnet
+#- Public IP Address
+#- Network Interface
+#- Network Security Group
+#- Virtual Machine
+#- MariaDB Server
+#- MariaDB Database
+#- MariaDB Firewall
 
 - hosts: localhost
   connection: local
@@ -40,7 +49,8 @@
         resource_group: endava-project-rg
         allocation_method: Static
         name: endava_project_pub_ip
-        # Register allows you to populate variables based on the output of Ansible tasks.
+        # Register stores the IP address of the created VM
+        # And allows you to use it as a variable for later refference
       register: output_ip_address
 
     - name: Output public IP Address
@@ -170,7 +180,7 @@
         msg: "The URL of the MySQL Host server is {{ mysql_state_dict.fully_qualified_domain_name }}" 
 
     # Source: https://docs.ansible.com/ansible/latest/collections/azure/azcollection/azure_rm_mariadbdatabase_module.html
-    # And this task creates a DB for it to which we can later connect
+    # And this task creates a DB on the server
     - name: Create MariaDB DB instance
       azure_rm_mariadbdatabase:
         resource_group: endava-project-rg
@@ -186,7 +196,3 @@
         name: webapp-mariadb-firewall-allow
         start_ip_address: 0.0.0.0
         end_ip_address: 255.255.255.255
-
-# Example Web Server pass: dX2xO2jF4iP9qB8nW6rJ9hY9sT1tR0xC
-# Example DB Server pass: pG6zI0bS7jC2cL5zI6hS8fB5aJ3wT4dC
-# Latest IP Address: 20.79.205.82

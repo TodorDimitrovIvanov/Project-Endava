@@ -19,9 +19,9 @@
 
   tasks:
     # Source: https://opensource.com/article/17/8/ansible-environment-management
-    # The source above doesn't work because the SSH account is not root but has sudo permissions 
+    # The code from the URL above doesn't work because the SSH account is not root even though it has sudo permissions 
     # Therefore to solve this issue we need to run a command instead 
-    # Alternatively, the 'become' should solve this issue but for the moment it doesn't seem to work
+    # Alternatively, the 'become' should solve this issue but haven't tested it properly 
     - name: Updating apt
       command: sudo apt-get update 
     
@@ -63,11 +63,12 @@
           }
 
 
+  
+
+    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
     # Can't enable the service due to the following error message: 
     # "Unable to enable service py-webapp: Failed to enable unit: Access denied
     # So we'll just do this manually 
-
-    # Source: https://stackoverflow.com/questions/35984151/how-to-create-new-system-service-by-ansible-playbook
     - name: Creating a service for running the Python web app 
       command: sudo cp -arf /home/todor/web/services/webapp /lib/systemd/system/py-webapp.service
 
